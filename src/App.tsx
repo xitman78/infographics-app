@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { TenantSelector } from "@cognite/gearbox";
 import { ReactAuthProvider } from "@cognite/react-auth";
+import BackgroundImage from "./components/BackgroundImage";
 import "antd/dist/antd.css";
 
 const PageContainer = styled.div`
@@ -53,7 +54,7 @@ class InfographicApp extends Component<{}, InfographicAppState> {
             redirectUrl={window.location.href}
             errorRedirectUrl={window.location.href}
           >
-            <div>Hello World</div>
+            <BackgroundImage/>
           </ReactAuthProvider>
         ) : (
           <TenantSelectorContainer>
