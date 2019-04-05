@@ -10,7 +10,7 @@ interface BackgroundImageState {
 
 class BackgroundImage extends React.Component<BackgroundImageProps, BackgroundImageState> {
 
-  imageRef = React.createRef();
+  imageRef = React.createRef<HTMLImageElement>();
 
   constructor(props: BackgroundImageProps) {
     super(props);
@@ -21,14 +21,14 @@ class BackgroundImage extends React.Component<BackgroundImageProps, BackgroundIm
   }
 
   handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    // console.log("event", event.target.files);
     if (event.target && event.target.files && event.target.files.length) {
       const selectedFile = event.target.files[0];
       const reader = new FileReader();
 
-      reader.onload = (event) => {
-        // @ts-ignore
-        this.imageRef.current.src = event.target.result!;
+      reader.onload = () => {
+        if (this.imageRef && this.imageRef.current) {
+          this.imageRef.current.src = reader.result as string;
+        }
       };
 
       reader.readAsDataURL(selectedFile);
@@ -37,11 +37,12 @@ class BackgroundImage extends React.Component<BackgroundImageProps, BackgroundIm
   }
 
   render() {
-    return <div>
-      <input type="file" onChange={this.handleFileChange} />
-      {/* @ts-ignore */}
-      <img ref={this.imageRef}/>
-    </div>;
+    return (
+      <div>
+       <input type="file" onChange={this.handleFileChange} />
+        <img ref={this.imageRef} />
+      </div>
+      );
   }
 }
 
