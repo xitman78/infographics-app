@@ -1,28 +1,57 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { TenantSelector } from "@cognite/gearbox";
+import { ReactAuthProvider } from "@cognite/react-auth";
+import "antd/dist/antd.css";
 
-class App extends Component {
+interface InfographicAppState {
+  tenant: string | null;
+}
+
+class InfographicApp extends Component<{}, InfographicAppState> {
+  state = {
+    tenant: null
+  };
+
+  handleTenantSelect = (
+    tenant: string,
+    advancedOptions: ({ [name: string]: string | number }) | null
+  ) => {
+    this.setState({ tenant });
+  };
+
+  validateTenant = (
+    tenant: string,
+    advancedOptions: ({ [name: string]: string | number }) | null
+  ): Promise<void> => {
+    return tenant && tenant.trim().length
+      ? Promise.resolve()
+      : Promise.reject();
+  };
+
   render() {
+    const { tenant } = this.state;
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
+        {tenant ? (
+          <ReactAuthProvider
+            project={tenant}
+            redirectUrl={window.location.href}
+            errorRedirectUrl={window.location.href}
           >
-            Learn React
-          </a>
-        </header>
+            <div>Hello World</div>
+          </ReactAuthProvider>
+        ) : (
+          <TenantSelector
+            onTenantSelected={this.handleTenantSelect}
+            validateTenant={this.validateTenant}
+            initialTenant="publicdata"
+            title="Infographic Demo"
+          />
+        )}
       </div>
     );
   }
 }
 
-export default App;
+export default InfographicApp;
