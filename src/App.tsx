@@ -1,7 +1,21 @@
 import React, { Component } from "react";
+import styled from "styled-components";
 import { TenantSelector } from "@cognite/gearbox";
 import { ReactAuthProvider } from "@cognite/react-auth";
 import "antd/dist/antd.css";
+
+const PageContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TenantSelectorContainer = styled.div`
+  max-width: 600px;
+  min-width: 400px;
+`;
 
 interface InfographicAppState {
   tenant: string | null;
@@ -32,7 +46,7 @@ class InfographicApp extends Component<{}, InfographicAppState> {
     const { tenant } = this.state;
 
     return (
-      <div className="App">
+      <PageContainer>
         {tenant ? (
           <ReactAuthProvider
             project={tenant}
@@ -42,14 +56,16 @@ class InfographicApp extends Component<{}, InfographicAppState> {
             <div>Hello World</div>
           </ReactAuthProvider>
         ) : (
-          <TenantSelector
-            onTenantSelected={this.handleTenantSelect}
-            validateTenant={this.validateTenant}
-            initialTenant="publicdata"
-            title="Infographic Demo"
-          />
+          <TenantSelectorContainer>
+            <TenantSelector
+              onTenantSelected={this.handleTenantSelect}
+              validateTenant={this.validateTenant}
+              initialTenant="publicdata"
+              title="Infographic Demo"
+            />
+          </TenantSelectorContainer>
         )}
-      </div>
+      </PageContainer>
     );
   }
 }
