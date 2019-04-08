@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { TenantSelector } from "@cognite/gearbox";
 import { ReactAuthProvider } from "@cognite/react-auth";
 import InfoLayout from "./containers/InfoLayout";
+import persistentDataService from "./services/PersistentData";
 
 const PageContainer = styled.div`
   width: 100vw;
@@ -17,7 +18,7 @@ const TenantSelectorContainer = styled.div`
   min-width: 400px;
 `;
 
-interface InfographicAppProps {}
+interface InfographicAppProps { }
 
 interface InfographicAppState {
   tenant: string | null;
@@ -26,12 +27,12 @@ interface InfographicAppState {
 class InfographicApp extends Component<
   InfographicAppProps,
   InfographicAppState
-> {
+  > {
   constructor(props: InfographicAppProps) {
     super(props);
 
     this.state = {
-      tenant: null
+      tenant: persistentDataService.getTenant(),
     };
   }
 
@@ -39,6 +40,7 @@ class InfographicApp extends Component<
     tenant: string,
     advancedOptions: ({ [name: string]: string | number }) | null
   ) => {
+    persistentDataService.setTenant(tenant);
     this.setState({ tenant });
   };
 
@@ -51,6 +53,11 @@ class InfographicApp extends Component<
       : Promise.reject();
   };
 
+  handleLogout = () => {
+    persistentDataService.clearTenant();
+    this.setState({ tenant: null });
+  }
+
   render() {
     const { tenant } = this.state;
 
@@ -62,18 +69,18 @@ class InfographicApp extends Component<
             redirectUrl={window.location.href}
             errorRedirectUrl={window.location.href}
           >
-            <InfoLayout />
+            <InfoLayout logoutAction={this.handleLogout}/>
           </ReactAuthProvider>
         ) : (
-          <TenantSelectorContainer>
-            <TenantSelector
-              onTenantSelected={this.handleTenantSelect}
-              validateTenant={this.validateTenant}
-              initialTenant="publicdata"
-              title="Infographic Demo"
-            />
-          </TenantSelectorContainer>
-        )}
+            <TenantSelectorContainer>
+              <TenantSelector
+                onTenantSelected={this.handleTenantSelect}
+                validateTenant={this.validateTenant}
+                initialTenant="publicdata"
+                title="Infographic Demo"
+              />
+            </TenantSelectorContainer>
+          )}
       </PageContainer>
     );
   }

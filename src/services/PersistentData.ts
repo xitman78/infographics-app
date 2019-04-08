@@ -1,13 +1,16 @@
-import * as lschache from "lscache";
+const TENANT = 'tenant';
 
 class PersistentDataService {
   public getTenant(): string | null {
-    return lschache.get("tenant") || null;
+    return window.localStorage.getItem(TENANT) || null;
   }
 
   public setTenant(tenant: string): void {
-    console.log("set tenant");
-    lscache.set("tenant", tenant);
+    window.localStorage.setItem(TENANT, tenant);
+  }
+
+  public clearTenant() {
+    window.localStorage.removeItem(TENANT);
   }
 }
 
