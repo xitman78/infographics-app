@@ -1,23 +1,26 @@
-import React, {ChangeEvent} from "react";
+import React, { ChangeEvent } from "react";
+import { Icon } from 'antd';
 
 interface BackgroundImageProps {
 
 }
 
 interface BackgroundImageState {
-  imageData: any;
+  imageLoaded: boolean;
 }
 
 class BackgroundImage extends React.Component<BackgroundImageProps, BackgroundImageState> {
 
   imageRef = React.createRef<HTMLImageElement>();
+  inputRef = React.createRef<HTMLInputElement>();
 
   constructor(props: BackgroundImageProps) {
     super(props);
     this.state = {
-      imageData: null,
+      imageLoaded: false,
     };
     this.handleFileChange = this.handleFileChange.bind(this);
+    this.handleUploadIconClick = this.handleUploadIconClick.bind(this);
   }
 
   handleFileChange(event: ChangeEvent<HTMLInputElement>) {
@@ -28,6 +31,7 @@ class BackgroundImage extends React.Component<BackgroundImageProps, BackgroundIm
       reader.onload = () => {
         if (this.imageRef && this.imageRef.current) {
           this.imageRef.current.src = reader.result as string;
+          this.setState({ imageLoaded: true });
         }
       };
 
@@ -36,13 +40,24 @@ class BackgroundImage extends React.Component<BackgroundImageProps, BackgroundIm
 
   }
 
+  handleUploadIconClick() {
+    if (this.inputRef.current) {
+      this.inputRef.current.click();
+    }
+  }
+
   render() {
     return (
       <div>
-       <input type="file" onChange={this.handleFileChange} />
-        <img ref={this.imageRef} />
+        {
+          !this.state.imageLoaded && <>
+            <input type="file" ref={this.inputRef} onChange={this.handleFileChange} style={{ display: 'none' }} />
+            <Icon type="upload" style={{ fontSize: '20px' }} onClick={this.handleUploadIconClick} />
+          </>
+        }
+        <img ref={this.imageRef} style={{ width: '100%', display: this.state.imageLoaded ? 'block' : 'node' }} />
       </div>
-      );
+    );
   }
 }
 
