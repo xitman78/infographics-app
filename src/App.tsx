@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { TenantSelector } from "@cognite/gearbox";
 import { ReactAuthProvider } from "@cognite/react-auth";
-import BackgroundImage from "./components/BackgroundImage";
-import "antd/dist/antd.css";
+import InfoLayout from "./containers/InfoLayout";
 
 const PageContainer = styled.div`
   width: 100vw;
@@ -18,14 +17,23 @@ const TenantSelectorContainer = styled.div`
   min-width: 400px;
 `;
 
+interface InfographicAppProps {}
+
 interface InfographicAppState {
   tenant: string | null;
 }
 
-class InfographicApp extends Component<{}, InfographicAppState> {
-  state = {
-    tenant: null
-  };
+class InfographicApp extends Component<
+  InfographicAppProps,
+  InfographicAppState
+> {
+  constructor(props: InfographicAppProps) {
+    super(props);
+
+    this.state = {
+      tenant: null
+    };
+  }
 
   handleTenantSelect = (
     tenant: string,
@@ -54,7 +62,7 @@ class InfographicApp extends Component<{}, InfographicAppState> {
             redirectUrl={window.location.href}
             errorRedirectUrl={window.location.href}
           >
-            <BackgroundImage/>
+            <InfoLayout />
           </ReactAuthProvider>
         ) : (
           <TenantSelectorContainer>
