@@ -1,16 +1,26 @@
 import React from "react";
-import { Layout } from "antd";
+import { Layout, Menu } from "antd";
 import BackgroundImage from "../components/BackgroundImage";
 
 const { Header, Footer, Content } = Layout;
 
 const InfoLayout = () => (
-  <Layout style={{ minWidth: "100vh" }}>
-    <Header>Header</Header>
+  <Layout style={{ minHeight: "100vh" }}>
+    <Header>
+      <Menu
+        theme="dark"
+        mode="horizontal"
+        defaultSelectedKeys={["1"]}
+        style={{ lineHeight: "64px" }}
+      >
+        <Menu.Item key="1">Infograpohics</Menu.Item>
+        <Menu.Item key="2">Logout</Menu.Item>
+      </Menu>
+    </Header>
     <Content>
       <BackgroundImage />
     </Content>
-    <Footer>Footer</Footer>
+    <Footer />
   </Layout>
 );
 
