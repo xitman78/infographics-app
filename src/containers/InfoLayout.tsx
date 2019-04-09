@@ -9,25 +9,26 @@ interface InfoLayoutProps {
   logoutAction: () => void;
 }
 
-const InfoLayout = ({logoutAction}: InfoLayoutProps) => (
+const InfoLayout = ({ logoutAction }: InfoLayoutProps) => (
   <Layout style={{ minHeight: "100vh" }}>
-    <Header style={{ minHeight: "60px" }}>
+    <Header>
       <Menu
         theme="dark"
         mode="horizontal"
         defaultSelectedKeys={["1"]}
         style={{ lineHeight: "64px" }}
       >
-        <Menu.Item key="1">Infograpohics</Menu.Item>
-        <Menu.Item key="2"><Icon type="upload" style={{ fontSize: '20px' }} /></Menu.Item>
-        <Menu.Item key="3">
-          <Icon type="arrow-right"
-            style={{ fontSize: '20px' }} 
-            onClick={logoutAction}/>
+        <Menu.Item key="1">Infographics</Menu.Item>
+        <Menu.Item key="2">
+          <Icon
+            type="arrow-right"
+            style={{ fontSize: "20px" }}
+            onClick={logoutAction}
+          />
         </Menu.Item>
       </Menu>
     </Header>
-    <Content>
+    <Content style={{ flex: 1, display: "flex", flexDirection: "column" }}>
       <BackgroundImage />
     </Content>
     <Footer />

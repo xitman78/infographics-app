@@ -18,7 +18,7 @@ const TenantSelectorContainer = styled.div`
   min-width: 400px;
 `;
 
-interface InfographicAppProps { }
+interface InfographicAppProps {}
 
 interface InfographicAppState {
   tenant: string | null;
@@ -27,12 +27,12 @@ interface InfographicAppState {
 class InfographicApp extends Component<
   InfographicAppProps,
   InfographicAppState
-  > {
+> {
   constructor(props: InfographicAppProps) {
     super(props);
 
     this.state = {
-      tenant: persistentDataService.getTenant(),
+      tenant: persistentDataService.getTenant()
     };
   }
 
@@ -56,22 +56,23 @@ class InfographicApp extends Component<
   handleLogout = () => {
     persistentDataService.clearTenant();
     this.setState({ tenant: null });
-  }
+  };
 
   render() {
     const { tenant } = this.state;
 
     return (
-      <PageContainer>
+      <>
         {tenant ? (
           <ReactAuthProvider
             project={tenant}
             redirectUrl={window.location.href}
             errorRedirectUrl={window.location.href}
           >
-            <InfoLayout logoutAction={this.handleLogout}/>
+            <InfoLayout logoutAction={this.handleLogout} />
           </ReactAuthProvider>
         ) : (
+          <PageContainer>
             <TenantSelectorContainer>
               <TenantSelector
                 onTenantSelected={this.handleTenantSelect}
@@ -80,8 +81,9 @@ class InfographicApp extends Component<
                 title="Infographic Demo"
               />
             </TenantSelectorContainer>
-          )}
-      </PageContainer>
+          </PageContainer>
+        )}
+      </>
     );
   }
 }

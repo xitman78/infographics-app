@@ -1,23 +1,48 @@
 import React, { ChangeEvent } from "react";
-import { Icon } from 'antd';
+import { Icon } from "antd";
+import styled from "styled-components";
 
-interface BackgroundImageProps {
+const IconContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
-}
+const ImageContainer = styled.div`
+  display: block;
+  position: relative;
+  width: 100%;
+  pointer-events: none;
+`;
+
+const Image = styled.img<{ isLoaded: boolean }>`
+  width: 100%;
+  align-self: flex-start;
+  display: ${({ isLoaded }) => (isLoaded ? "block" : "none")};
+`;
+
+const FileInput = styled.input`
+  display: none;
+`;
+
+interface BackgroundImageProps {}
 
 interface BackgroundImageState {
   imageLoaded: boolean;
 }
 
-class BackgroundImage extends React.Component<BackgroundImageProps, BackgroundImageState> {
-
+class BackgroundImage extends React.Component<
+  BackgroundImageProps,
+  BackgroundImageState
+> {
   imageRef = React.createRef<HTMLImageElement>();
   inputRef = React.createRef<HTMLInputElement>();
 
   constructor(props: BackgroundImageProps) {
     super(props);
     this.state = {
-      imageLoaded: false,
+      imageLoaded: false
     };
     this.handleFileChange = this.handleFileChange.bind(this);
     this.handleUploadIconClick = this.handleUploadIconClick.bind(this);
@@ -37,7 +62,6 @@ class BackgroundImage extends React.Component<BackgroundImageProps, BackgroundIm
 
       reader.readAsDataURL(selectedFile);
     }
-
   }
 
   handleUploadIconClick() {
@@ -48,15 +72,39 @@ class BackgroundImage extends React.Component<BackgroundImageProps, BackgroundIm
 
   render() {
     return (
-      <div>
-        {
-          !this.state.imageLoaded && <>
-            <input type="file" ref={this.inputRef} onChange={this.handleFileChange} style={{ display: 'none' }} />
-            <Icon type="upload" style={{ fontSize: '20px' }} onClick={this.handleUploadIconClick} />
-          </>
-        }
-        <img ref={this.imageRef} style={{ width: '100%', display: this.state.imageLoaded ? 'block' : 'node' }} />
-      </div>
+      <>
+        {!this.state.imageLoaded && (
+          <IconContainer>
+            <FileInput
+              type="file"
+              accept="image/*"
+              ref={this.inputRef}
+              onChange={this.handleFileChange}
+            />
+            <Icon
+              type="upload"
+              style={{ fontSize: "40px" }}
+              onClick={this.handleUploadIconClick}
+            />
+          </IconContainer>
+        )}
+        <ImageContainer>
+          <Image ref={this.imageRef} isLoaded={this.state.imageLoaded} />
+          <div
+            style={{
+              display: "block",
+              width: "25px",
+              height: "25px",
+              borderRadius: "100%",
+              top: "200px",
+              left: "300px",
+              backgroundColor: "red",
+              position: "absolute",
+              zIndex: 100
+            }}
+          />
+        </ImageContainer>
+      </>
     );
   }
 }
