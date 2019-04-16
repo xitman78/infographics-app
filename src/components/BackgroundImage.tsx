@@ -56,7 +56,6 @@ class BackgroundImage extends React.Component<
           this.setState({ imageLoaded: true });
         }
       };
-
       reader.readAsDataURL(selectedFile);
     }
   }

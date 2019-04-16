@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Layout, Menu, Icon } from "antd";
 import { TimeseriesSearchAndSelect } from "@cognite/gearbox";
 import BackgroundImage from "../components/BackgroundImage";
-import TimeSeriesSearch from "../components/TimeSeriesSearch";
 
 const { Header, Footer, Content, Sider } = Layout;
 
@@ -56,7 +55,7 @@ const InfoLayout: React.FC<InfoLayoutProps> = ({ logoutAction }) => {
           <TimeseriesSearchAndSelect
             onTimeserieSelectionChange={(_, ts) => {
               if (timeserieIds.includes(ts.id)) {
-                return;
+                return; // duplicate
               }
               setTimeserieIds([...timeserieIds, ts.id]);
               setColorsMap({
