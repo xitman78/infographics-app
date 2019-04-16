@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { Layout, Menu, Icon } from "antd";
+import { TimeseriesSearchAndSelect } from "@cognite/gearbox";
 import BackgroundImage from "../components/BackgroundImage";
 import TimeSeriesSearch from "../components/TimeSeriesSearch";
 
 const { Header, Footer, Content, Sider } = Layout;
+
+function getRandomColor(): string {
+  return "#" + (((1 << 24) * Math.random()) | 0).toString(16);
+}
 
 interface InfoLayoutProps {
   logoutAction: () => void;
@@ -11,6 +16,8 @@ interface InfoLayoutProps {
 
 const InfoLayout: React.FC<InfoLayoutProps> = ({ logoutAction }) => {
   const [isSideBarOpened, setIsSideBarOpened] = useState<boolean>(false);
+  const [timeserieIds, setTimeserieIds] = useState<number[]>([]);
+  const [colorsMap, setColorsMap] = useState<{ [k: string]: string }>({});
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -35,7 +42,7 @@ const InfoLayout: React.FC<InfoLayoutProps> = ({ logoutAction }) => {
       </Header>
       <Layout hasSider={true}>
         <Content style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          <BackgroundImage />
+          <BackgroundImage timeserieIds={timeserieIds} colorsMap={colorsMap} />
         </Content>
         <Sider
           theme="light"
@@ -46,7 +53,19 @@ const InfoLayout: React.FC<InfoLayoutProps> = ({ logoutAction }) => {
           width={300}
           onCollapse={(collapsed: boolean) => setIsSideBarOpened(collapsed)}
         >
-          <TimeSeriesSearch onTimeSerieSelected={() => null} />
+          <TimeseriesSearchAndSelect
+            onTimeserieSelectionChange={(_, ts) => {
+              if (timeserieIds.includes(ts.id)) {
+                return;
+              }
+              setTimeserieIds([...timeserieIds, ts.id]);
+              setColorsMap({
+                ...colorsMap,
+                ...{ [ts.id.toString()]: getRandomColor() }
+              });
+            }}
+            single
+          />
         </Sider>
       </Layout>
       <Footer />

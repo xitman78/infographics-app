@@ -16,7 +16,6 @@ const TimeSeriesSearch: React.FC<TimeSeriesSearch> = ({
 
   function searchTimeSeries() {
     sdk.TimeSeries.search({ query: searchText, limit: 10 }).then(res => {
-      console.log("-----TimeSeries", res);
       setSearchResults(res.items);
     });
   }

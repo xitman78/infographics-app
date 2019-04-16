@@ -1,19 +1,13 @@
 import React, { ChangeEvent } from "react";
 import { Icon } from "antd";
 import styled from "styled-components";
+import { SensorOverlay } from "@cognite/gearbox";
 
 const IconContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-`;
-
-const ImageContainer = styled.div`
-  display: block;
-  position: relative;
-  width: 100%;
-  pointer-events: none;
 `;
 
 const Image = styled.img<{ isLoaded: boolean }>`
@@ -26,7 +20,10 @@ const FileInput = styled.input`
   display: none;
 `;
 
-interface BackgroundImageProps {}
+interface BackgroundImageProps {
+  timeserieIds: number[];
+  colorsMap: { [k: string]: string };
+}
 
 interface BackgroundImageState {
   imageLoaded: boolean;
@@ -88,22 +85,13 @@ class BackgroundImage extends React.Component<
             />
           </IconContainer>
         )}
-        <ImageContainer>
+        <SensorOverlay
+          timeserieIds={this.props.timeserieIds}
+          colorMap={this.props.colorsMap}
+        >
           <Image ref={this.imageRef} isLoaded={this.state.imageLoaded} />
-          <div
-            style={{
-              display: "block",
-              width: "25px",
-              height: "25px",
-              borderRadius: "100%",
-              top: "200px",
-              left: "300px",
-              backgroundColor: "red",
-              position: "absolute",
-              zIndex: 100
-            }}
-          />
-        </ImageContainer>
+        </SensorOverlay>
+        )}
       </>
     );
   }
