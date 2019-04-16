@@ -76,7 +76,6 @@ class InfographicApp extends Component<
             <TenantSelectorContainer>
               <TenantSelector
                 onTenantSelected={this.handleTenantSelect}
-                validateTenant={this.validateTenant}
                 initialTenant="publicdata"
                 title="Infographic Demo"
               />
