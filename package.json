@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cognite/gearbox": "^0.0.6",
+    "@cognite/gearbox": "^0.0.9",
     "@cognite/react-auth": "^2.1.2",
     "@cognite/sdk": "^1.5.6",
     "@types/jest": "24.0.11",

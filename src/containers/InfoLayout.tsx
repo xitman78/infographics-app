@@ -9,6 +9,17 @@ function getRandomColor(): string {
   return "#" + (((1 << 24) * Math.random()) | 0).toString(16);
 }
 
+function getNewColorMap(
+  map: { [k: string]: string },
+  ids: number[]
+): { [k: string]: string } {
+  const newMap: { [k: string]: string } = {};
+  for (const id of ids) {
+    newMap[id] = map[id] || getRandomColor();
+  }
+  return newMap;
+}
+
 interface InfoLayoutProps {
   logoutAction: () => void;
 }
@@ -50,20 +61,14 @@ const InfoLayout: React.FC<InfoLayoutProps> = ({ logoutAction }) => {
           defaultCollapsed={true}
           collapsedWidth={0}
           width={300}
+          style={{ height: "calc(100vh - 104px)", overflowY: "scroll" }}
           onCollapse={(collapsed: boolean) => setIsSideBarOpened(collapsed)}
         >
           <TimeseriesSearchAndSelect
-            onTimeserieSelectionChange={(_, ts) => {
-              if (timeserieIds.includes(ts.id)) {
-                return; // duplicate
-              }
-              setTimeserieIds([...timeserieIds, ts.id]);
-              setColorsMap({
-                ...colorsMap,
-                ...{ [ts.id.toString()]: getRandomColor() }
-              });
+            onTimeserieSelectionChange={tsIds => {
+              setTimeserieIds(tsIds);
+              setColorsMap(getNewColorMap(colorsMap, tsIds));
             }}
-            single
           />
         </Sider>
       </Layout>
